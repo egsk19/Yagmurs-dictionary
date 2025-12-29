@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mispell Dictionary</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #2596be;
+      --card: #0b3c4a;
+      --accent: #ffffff;
+      --accent-2: #d1f5ff;
+      --text: #ffffff;
+      --muted: #cfeaf3;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Inter, sans-serif;
+      background: #050415;
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 24px;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 900px;
+      background: #050415;
+      border-radius: 20px;
+      padding: 28px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    h1 {
+      font-size: 28px;
+      margin: 0;
+      letter-spacing: -0.5px;
+    }
+
+    header span {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .search {
+      position: relative;
+      flex: 1;
+      max-width: 360px;
+    }
+
+    .search input {
+      width: 100%;
+      padding: 12px 44px 12px 16px;
+      border-radius: 12px;
+      border: none;
+      outline: none;
+      font-size: 14px;
+      background: #020617;
+      color: var(--text);
+      box-shadow: inset 0 0 0 1px #1f2937;
+    }
+
+    .search input::placeholder { color: var(--muted); }
+
+    .search::after {
+      content: "🔍";
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      opacity: 0.6;
+    }
+
+    .list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .card {
+      background: #020617;
+      border-radius: 16px;
+      padding: 18px;
+      box-shadow: inset 0 0 0 1px #1f2937;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      text-align: center;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: inset 0 0 0 1px #38bdf8, 0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    .wrong {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--accent-2);
+    }
+
+    .right {
+      font-size: 16px;
+      margin-top: 6px;
+      color: #fb7185;
+      font-weight: 600;
+    }
+
+    .desc {
+      font-size: 13px;
+      margin-top: 8px;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    .phonetic {
+      font-size: 12px;
+      color: var(--muted);
+      opacity: 0.8;
+    }
+
+    footer {
+      margin-top: 16px;
+      text-align: center;
+      font-size: 8px;
+      color: var(--muted);
+      opacity: 0.75;
+    }
+
+    footer strong { color: var(--accent); }
+
+    @media (max-width: 600px) {
+      header { flex-direction: column; align-items: flex-start; }
+      .search { max-width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <h1>Yağmur Dictionary</h1>
+      <div class="search">
+        <input type="text" id="search" placeholder="Search the Yağmur dictionary" />
+      </div>
+    </header>
+
+    <div class="list" id="list"></div>
+
+    <footer>
+      Made by <strong>egsk.4</strong> for <strong>Yağmur</strong> 🤍
+    </footer>
+  </div>
+
+  <script>
+    const data = [
+      { wrong: 'Rasist', right: 'Racist', desc: 'He was called a rasist for his comments online.' },
+      { wrong: 'Sence', right: 'Sense', desc: 'That didn’t make any sence to me at all.' },
+      { wrong: 'Congrajulashins', right: 'Congrats', desc: 'Congrajulashins on passing your exam!' },
+      { wrong: 'Awsom', right: 'Awesome', desc: 'That movie was awsom, I loved it.' },
+      { wrong: 'Beget', right: 'Baguette', desc: 'She bought a fresh beget from the bakery.' },
+      { wrong: 'Salooshin', right: 'Solution', desc: 'We finally found the salooshin to the problem.' },
+      { wrong: 'Deceshin', right: 'Decision', desc: 'It was a hard deceshin to make.' },
+      { wrong: 'Masheeen', right: 'Machine', desc: 'The masheeen stopped working suddenly.' },
+      { wrong: 'Problim', right: 'Problem', desc: 'There is a serious problim with the system.' },
+      { wrong: 'Exapshin', right: 'Exception', desc: 'This rule has only one exapshin.' },
+      { wrong: 'Conequit', right: 'Connect', desc: 'I can’t conequit to the Wi-Fi.' },
+      { wrong: 'Nolig', right: 'Knowledge', desc: 'He has a lot of nolig about cars.' },
+      { wrong: 'Jorgis', right: 'Gorgeous', desc: 'That dress looks jorgis on you.' },
+      { wrong: 'Baisicaly', right: 'Basically', desc: 'I’m baisicaly done with everything.' },
+      { wrong: 'Sheeld at dawn', right: 'Sheldon', desc: 'My favorite character is Sheeld at dawn.' },
+      { wrong: 'Sirios', right: 'Serious', desc: 'Are you being sirios right now?' },
+      { wrong: 'Fought', right: 'Thought', desc: 'I fought you were coming later.' },
+      { wrong: 'Retardad', right: 'Retarded', desc: 'The system became retardad after the update.' },
+      { wrong: 'Sipiration', right: 'Separation', desc: 'There was a clear sipiration between them.' },
+      { wrong: 'Wiskir', right: 'Whisker', desc: 'The cats wiskir was very long.' },
+      { wrong: 'Mastash', right: 'Moustache', desc: 'He shaved his mastash yesterday.' },
+      { wrong: 'Minout', right: 'Minute', desc: 'Wait a minout, I’ll be back.' },
+      { wrong: 'Burgeraly', right: 'Burglary', desc: 'The police investigated the burgeraly.' },
+      { wrong: 'Dicshinary', right: 'Dictionary', desc: 'I looked it up in the dicshinary.' }
+    ];
+
+    const list = document.getElementById('list');
+    const search = document.getElementById('search');
+
+    function render(filter = '') {
+      const term = filter.toLowerCase();
+      list.innerHTML = '';
+      data.filter(item => item.wrong.toLowerCase().includes(term) || item.right.toLowerCase().includes(term))
+          .forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <div class='right'>❌ ${item.right}</div>
+          <div class='wrong'>✅ ${item.wrong}</div>
+          <div class='desc'><em>noun</em> · /ˈjamur/ · informal · nonstandard</div>
+          <div class='desc' style='font-size:12px; opacity:0.75'>Usage: common in casual texting, discouraged in formal writing</div>
+          <div class='desc'><strong>Example:</strong> ${item.desc}</div>
+          <div class='desc' style='opacity:0.8'>Commonly confused with: <strong>${item.right}</strong></div>
+          <div class='desc' style='font-size:12px; opacity:0.6'>Status: ❌ Not recognized by the Yagmur dictionary</div>
+        `;
+        list.appendChild(card);
+      });
+    }
+
+    search.addEventListener('input', e => render(e.target.value));
+    render();
+  </script>
+</body>
+</html>
