@@ -3,14 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mispell Dictionary</title>
+  <title>Yağmur Dictionary</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #2596be;
-      --card: #0b3c4a;
+      --bg: #050415;
+      --card: #020617;
       --accent: #ffffff;
       --accent-2: #d1f5ff;
+      --danger: #fb7185;
       --text: #ffffff;
       --muted: #cfeaf3;
     }
@@ -20,19 +21,15 @@
     body {
       margin: 0;
       font-family: Inter, sans-serif;
-      background: #050415;
+      background: var(--bg);
       color: var(--text);
       min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: stretch;
-      justify-content: flex-start;
       padding: 24px;
     }
 
     .app {
       width: 100%;
-      background: #050415;
+      background: var(--bg);
       border-radius: 20px;
       padding: 28px;
       box-shadow: 0 20px 60px rgba(0,0,0,0.4);
@@ -43,7 +40,7 @@
       align-items: center;
       justify-content: space-between;
       gap: 16px;
-      margin-bottom: 24px;
+      margin-bottom: 12px;
     }
 
     h1 {
@@ -65,13 +62,12 @@
       border: none;
       outline: none;
       font-size: 14px;
-      background: #020617;
+      background: var(--card);
       color: var(--text);
       box-shadow: inset 0 0 0 1px #1f2937;
     }
 
     .search input::placeholder { color: var(--muted); }
-
     .search::after {
       content: "🔍";
       position: absolute;
@@ -81,133 +77,141 @@
       opacity: 0.6;
     }
 
+    .word-count {
+      margin-bottom: 16px;
+      font-size: 12px;
+      color: var(--muted);
+      text-align: center;
+    }
+
     .list {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
       gap: 16px;
-      margin-top: 20px;
       width: 100%;
     }
 
     .card {
-      background: #020617;
+      background: var(--card);
       border-radius: 16px;
       padding: 18px;
       box-shadow: inset 0 0 0 1px #1f2937;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
       text-align: center;
-      height: 100%;
     }
 
-    .card:hover {
-      transform: translateY(-4px);
-      box-shadow: inset 0 0 0 1px #38bdf8, 0 10px 30px rgba(0,0,0,0.5);
+    .badge {
+      display: inline-block;
+      margin-bottom: 6px;
+      padding: 2px 8px;
+      font-size: 10px;
+      border-radius: 999px;
+      background: #7c2d12;
+      color: #ffffff;
     }
 
-    .wrong {
-      font-size: 18px;
-      font-weight: 700;
-      color: var(--accent-2);
-    }
+    .badge-new { background: #f59e0b; }
 
-    .right {
-      font-size: 16px;
-      margin-top: 6px;
-      color: #fb7185;
-      font-weight: 600;
-    }
-
-    .desc {
-      font-size: 13px;
-      margin-top: 8px;
-      color: var(--muted);
-      line-height: 1.4;
-    }
+    .right { font-size: 16px; color: var(--danger); font-weight: 600; }
+    .wrong { font-size: 18px; font-weight: 700; color: var(--accent-2); margin-top: 4px; }
+    .desc { font-size: 13px; margin-top: 8px; color: var(--muted); line-height: 1.4; }
 
     footer {
-      margin-top: 16px;
+      margin-top: 18px;
       text-align: center;
       font-size: 8px;
       color: var(--muted);
       opacity: 0.75;
     }
-
     footer strong { color: var(--accent); }
-
-    @media (max-width: 600px) {
-      header { flex-direction: column; align-items: flex-start; }
-      .search { max-width: 100%; }
-    }
   </style>
 </head>
 <body>
   <div class="app">
     <header>
-      <h1>Yağmur Dictionary</h1>
+      <h1>Yağmur Dictionary <span style="font-size:14px; opacity:0.7">v1.1</span></h1>
       <div class="search">
         <input type="text" id="search" placeholder="Search the Yağmur dictionary" />
       </div>
     </header>
 
+    <div class="word-count" id="word-count"></div>
+
     <div class="list" id="list"></div>
 
     <footer>
-      Made by <strong>egsk.4</strong> for <strong>Yağmur</strong> 🤍
+      © 2025 Yağmur Dictionary Project · Compiled by <strong>egsk.4</strong><br>
+      Editorial Board: egsk.4 (Chief Lexicographer), Yağmur (Primary Source)<br>
+      <span style="opacity:0.6">v1.1 – Minor fixes and wording updates</span>
     </footer>
   </div>
 
   <script>
     const data = [
-      { wrong: 'Rasist', right: 'Racist', desc: 'He was called a rasist for his comments online.' },
-      { wrong: 'Sence', right: 'Sense', desc: 'That didn’t make any sence to me at all.' },
-      { wrong: 'Congrajulashins', right: 'Congrats', desc: 'Congrajulashins on passing your exam!' },
-      { wrong: 'Awsom', right: 'Awesome', desc: 'That movie was awsom, I loved it.' },
-      { wrong: 'Beget', right: 'Baguette', desc: 'She bought a fresh beget from the bakery.' },
-      { wrong: 'Salooshin', right: 'Solution', desc: 'We finally found the salooshin to the problem.' },
-      { wrong: 'Deceshin', right: 'Decision', desc: 'It was a hard deceshin to make.' },
-      { wrong: 'Masheeen', right: 'Machine', desc: 'The masheeen stopped working suddenly.' },
-      { wrong: 'Problim', right: 'Problem', desc: 'There is a serious problim with the system.' },
-      { wrong: 'Exapshin', right: 'Exception', desc: 'This rule has only one exapshin.' },
-      { wrong: 'Conequit', right: 'Connect', desc: 'I can’t conequit to the Wi-Fi.' },
-      { wrong: 'Nolig', right: 'Knowledge', desc: 'He has a lot of nolig about cars.' },
-      { wrong: 'Jorgis', right: 'Gorgeous', desc: 'That dress looks jorgis on you.' },
-      { wrong: 'Baisicaly', right: 'Basically', desc: 'I’m baisicaly done with everything.' },
-      { wrong: 'Sheeld at dawn', right: 'Sheldon', desc: 'My favorite character is Sheeld at dawn.' },
-      { wrong: 'Sirios', right: 'Serious', desc: 'Are you being sirios right now?' },
-      { wrong: 'Fought', right: 'Thought', desc: 'I fought you were coming later.' },
-      { wrong: 'Retardad', right: 'Retarded', desc: 'The system became retardad after the update.' },
-      { wrong: 'Sipiration', right: 'Separation', desc: 'There was a clear sipiration between them.' },
-      { wrong: 'Wiskir', right: 'Whisker', desc: 'The cats wiskir was very long.' },
-      { wrong: 'Mastash', right: 'Moustache', desc: 'He shaved his mastash yesterday.' },
-      { wrong: 'Minout', right: 'Minute', desc: 'Wait a minout, I’ll be back.' },
-      { wrong: 'Burgeraly', right: 'Burglary', desc: 'The police investigated the burgeraly.' },
-      { wrong: 'Dicshinary', right: 'Dictionary', desc: 'I looked it up in the dicshinary.' }
+      { wrong: 'Rasist', right: 'Racist', desc: 'A nonstandard spelling intended to mean racist.', example: "He was called a rasist for his comments online." },
+      { wrong: 'Sence', right: 'Sense', desc: 'A misspelling of sense.', example: "That did not make any sence." },
+      { wrong: 'Congrajulashins', right: 'Congrats', desc: 'A misspelling of congrats.', example: "Congrajulashins on your exam!" },
+      { wrong: 'Awsom', right: 'Awesome', desc: 'A misspelling of awesome.', example: "That movie was awsom." },
+      { wrong: 'Beget', right: 'Baguette', desc: 'A misspelling of baguette.', example: "I bought a fresh beget from the bakery." },
+      { wrong: 'Salooshin', right: 'Solution', desc: 'A misspelling of solution.', example: "We found a salooshin to the problem." },
+      { wrong: 'Deceshin', right: 'Decision', desc: 'A misspelling of decision.', example: "It was a tough deceshin." },
+      { wrong: 'Masheeen', right: 'Machine', desc: 'A misspelling of machine.', example: "The masheeen broke down." },
+      { wrong: 'Problim', right: 'Problem', desc: 'A misspelling of problem.', example: "I have a big problim." },
+      { wrong: 'Exapshin', right: 'Exception', desc: 'A misspelling of exception.', example: "This is an exapshin to the rule." },
+      { wrong: 'Conequit', right: 'Connect', desc: 'A misspelling of connect.', example: "Can you conequit the cables?" },
+      { wrong: 'Nolig', right: 'Knowledge', desc: 'A misspelling of knowledge.', example: "He has great nolig." },
+      { wrong: 'Jorgis', right: 'Gorgeous', desc: 'A misspelling of gorgeous.', example: "She looked jorgis." },
+      { wrong: 'Baisicaly', right: 'Basically', desc: 'A misspelling of basically.', example: "Baisicaly, it was fun." },
+      { wrong: 'Sheeld at dawn', right: 'Sheldon', desc: 'A humorous misspelling of Sheldon.', example: "Sheeld at dawn is my favorite character." },
+      { wrong: 'Sirios', right: 'Serious', desc: 'A misspelling of serious.', example: "He is sirios about his work." },
+      { wrong: 'Fought', right: 'Thought', desc: 'A misspelling of thought.', example: "I never fought about that." },
+      { wrong: 'Retardad', right: 'Retarded', desc: 'A misspelling of retarded.', example: "That idea was retardad." },
+      { wrong: 'Sipiration', right: 'Separation', desc: 'A misspelling of separation.', example: "The sipiration was hard." },
+      { wrong: 'Wiskir', right: 'Whisker', desc: 'A misspelling of whisker.', example: "The cat's wiskir twitched." },
+      { wrong: 'Mastash', right: 'Moustache', desc: 'A misspelling of moustache.', example: "He grew a mastash." },
+      { wrong: 'Minout', right: 'Minute', desc: 'A misspelling of minute.', example: "I waited a minout." },
+      { wrong: 'Burgeraly', right: 'Burglary', desc: 'A misspelling of burglary.', example: "There was a burgeraly in the neighborhood." },
+      { wrong: 'Dicshinary', right: 'Dictionary', desc: 'A misspelling of dictionary.', example: "This dicshinary is helpful." },
+      { wrong: 'Peaple', right: 'People', desc: 'Human beings in general.', example: "Many peaple agree.", newWord:true },
+      { wrong: 'Oh em gee', right: 'OMG', desc: 'An expression of surprise.', example: "Oh em gee that is wild.", newWord:true },
+      { wrong: 'Apiranitaly', right: 'Apparently', desc: 'As far as one knows.', example: "Apiranitaly it was canceled.", newWord:true },
+      { wrong: 'Properaly', right: 'Properly', desc: 'In an appropriate manner.', example: "Do it properaly.", newWord:true },
+      { wrong: 'Hibijibis', right: 'Hijabis', desc: 'Women who wear the hijab.', example: "The hibijibis attended the event.", newWord:true },
+      { wrong: 'Perishian', right: 'Persian', desc: 'Relating to Persia or Iran.', example: "She speaks perishian.", newWord:true },
+      { wrong: 'Superfragalistixfradgilosas', right: 'Supercalifragilisticexpialidocious', desc: 'A nonsense word meaning fantastic.', example: "That trick was superfragalistixfradgilosas.", newWord:true },
+      { wrong: 'Litirily', right: 'Literally', desc: 'In an exact sense.', example: "I was litirily shocked.", newWord:true },
+      { wrong: 'Kat', right: 'Cat', desc: 'A small domesticated animal.', example: "The kat slept on the couch.", newWord:true }
     ];
 
     const list = document.getElementById('list');
     const search = document.getElementById('search');
+    const wordCountEl = document.getElementById('word-count');
 
-    function render(filter = '') {
-      const term = filter.toLowerCase();
+    function render(filter='') {
+      const term = (filter || '').toLowerCase();
       list.innerHTML = '';
-      data.filter(item => item.wrong.toLowerCase().includes(term) || item.right.toLowerCase().includes(term))
-          .forEach(item => {
+      let count = 0;
+      data.forEach(function(item) {
+        if (!item.wrong.toLowerCase().includes(term) && !item.right.toLowerCase().includes(term)) return;
+        count++;
         const card = document.createElement('div');
         card.className = 'card';
-        card.innerHTML = `
-          <div class='right'>❌ ${item.right}</div>
-          <div class='wrong'>✅ ${item.wrong}</div>
-          <div class='desc'><em>noun</em> · /ˈjamur/ · informal · nonstandard</div>
-          <div class='desc' style='font-size:12px; opacity:0.75'>Usage: common in casual texting, discouraged in formal writing</div>
-          <div class='desc'><strong>Example:</strong> ${item.desc}</div>
-          <div class='desc' style='opacity:0.8'>Commonly confused with: <strong>${item.right}</strong></div>
-          <div class='desc' style='font-size:12px; opacity:0.6'>Status: ❌ Not recognized by the Yagmur dictionary</div>
-        `;
+        card.innerHTML =
+          '<span class="badge">Deprecated spelling</span>' +
+          (item.newWord ? ' <span class="badge badge-new">New!</span>' : '') +
+          '<div class="right">❌ ' + item.right + '</div>' +
+          '<div class="wrong">✅ ' + item.wrong + '</div>' +
+          '<div class="desc"><strong>Definition:</strong> ' + item.desc + '</div>' +
+          '<div class="desc"><strong>Example:</strong> ' + item.example + '</div>' +
+          '<div class="desc" style="font-size:12px; opacity:0.6">Status: ❌ Not recognized by the Yağmur Dictionary<br>Source: Yağmur, 2025</div>';
         list.appendChild(card);
       });
+      wordCountEl.textContent = 'Total words: ' + count;
     }
 
-    search.addEventListener('input', e => render(e.target.value));
+    search.addEventListener('input', function(e) {
+      render(e.target.value);
+    });
+
     render();
   </script>
 </body>
