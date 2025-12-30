@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Yagmur Spelling Quiz</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Yağmur Dictionary</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -14,206 +14,213 @@
   --danger:#fb7185;
   --text:#fff;
   --muted:#cfeaf3;
-  --primary:#000;
 }
-body{margin:0;font-family:Inter,sans-serif;background:var(--bg);color:var(--text);display:flex;justify-content:center;align-items:center;min-height:100vh;}
-button{cursor:pointer;border:none;outline:none;}
-.app{position:relative;width:100%;max-width:500px;padding:20px;}
-.start-card, .quiz-card, .result-card{background:var(--card);padding:24px;border-radius:20px;text-align:center;box-shadow:0 0 15px rgba(0,0,0,.5);}
-.start-card h1, .result-card h1{margin-bottom:16px;}
-.start-card button, .option-btn, #pause-btn, #reset-btn, #unpause-btn-overlay{display:block;margin:10px auto;padding:10px 20px;border-radius:50px;background:var(--primary);color:#fff;font-size:16px;transition:0.2s;text-align:center;}
-.start-card button:hover, .option-btn:hover, #pause-btn:hover, #reset-btn:hover, #unpause-btn-overlay:hover{background:#3b82f6;}
-.option-btn{width:80%;text-align:left;display:flex;align-items:center;justify-content:flex-start;gap:10px;}
-.progress-bar{height:12px;background:#1e293b;border-radius:6px;overflow:hidden;margin:10px 0;}
-.progress-fill{height:100%;background:#3b82f6;width:0%;transition:width 0.3s;}
-#timer{font-weight:600;float:right;margin-top:-40px;margin-right:10px;}
-#question-counter{float:left;margin-top:-40px;margin-left:10px;}
-#pause-overlay{position:absolute;top:0;left:0;width:100%;height:100%;background:#000;display:none;align-items:center;justify-content:center;border-radius:20px;z-index:10;flex-direction:column;}
-#pause-overlay h2{color:#fff;margin-bottom:20px;text-align:center;}
-#toast{position:fixed;bottom:20px;right:20px;background:#222;padding:12px 20px;border-radius:12px;color:#fff;opacity:0;pointer-events:none;transition:opacity .3s;text-align:center;}
-#reset-btn.active{background:#000;color:#fff;}
+*{box-sizing:border-box;}
+body{margin:0;font-family:Inter,sans-serif;background:var(--bg);color:var(--text);padding:24px;}
+.app{padding:28px;border-radius:20px;}
+header{display:flex;flex-direction:column;gap:12px;}
+.top-row{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;}
+h1{margin:0;font-size:28px;}
+.controls{display:flex;gap:10px;flex-wrap:wrap;position:relative;}
+.search{position:relative;}
+.search input{
+  background:var(--card);color:var(--text);border:none;border-radius:12px;
+  padding:12px 50px 12px 16px;
+  width:360px;
+  box-shadow:inset 0 0 0 1px #1f2937;
+}
+.search .clear-btn{
+  position:absolute;
+  right:10px;
+  top:50%;
+  transform:translateY(-50%);
+  background:none;
+  border:none;
+  color:#aaa;
+  font-size:16px;
+  cursor:pointer;
+  opacity:.7;
+}
+.search .clear-btn:hover{opacity:1;}
+.search::after{content:"🔍";position:absolute;right:36px;top:50%;transform:translateY(-50%);opacity:.6;}
+select{
+  background:var(--card);color:var(--text);border:none;padding:10px;font-size:12px;box-shadow:inset 0 0 0 1px #1f2937;border-radius:12px;
+}
+.filters{display:flex;gap:6px;flex-wrap:wrap;}
+.filter{
+  font-size:10px;padding:4px 10px;border-radius:999px;background:#020617;box-shadow:inset 0 0 0 1px #1f2937;color:var(--muted);cursor:pointer;
+}
+.filter.active{background:#1e293b;color:#fff;box-shadow:inset 0 0 0 1px #3b82f6;}
+.word-count{text-align:center;font-size:12px;color:var(--muted);margin-bottom:16px;}
+.list{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;}
+.card{
+  background:var(--card);border-radius:16px;padding:18px;
+  box-shadow:inset 0 0 0 1px #1f2937;text-align:center;transition:transform .2s ease, box-shadow .2s ease;
+}
+.card:hover{transform:translateY(-3px);box-shadow:0 12px 28px rgba(0,0,0,.35);}
+.badge-new{border-radius:999px;background:#f59e0b;padding:2px 8px;font-size:10px;color:#fff;}
+.tag{font-size:9px;padding:2px 6px;border-radius:6px;background:#1e293b;color:var(--muted);margin-left:4px;}
+.right, .wrong{font-size:16px;font-weight:700;text-align:center;margin:6px 0;}
+.right{color:var(--danger);}
+.wrong{color:var(--accent-2);}
+.desc{font-size:13px;color:var(--muted);margin-top:8px;text-align:center;}
+.copy-btn{background:none;border:none;color:#aaa;cursor:pointer;float:right;font-size:14px;opacity:.6;}
+.copy-btn:hover{opacity:1;}
+.toast{
+  position:fixed;bottom:20px;right:20px;background:#222;padding:12px 20px;border-radius:12px;color:#fff;opacity:0;pointer-events:none;transition:opacity .3s;text-align:center;
+}
+.word-of-day{
+  background:var(--card);padding:12px 16px;border-radius:16px;margin-bottom:16px;text-align:center;font-weight:600;box-shadow:inset 0 0 0 1px #1f2937;
+}
+.footer-message{
+  background:var(--card);padding:18px 16px;border-radius:16px;margin-top:16px;text-align:center;box-shadow:inset 0 0 0 1px #1f2937;
+}
+footer{text-align:center;font-size:9px;color:var(--muted);margin-top:22px;}
+footer a{color:var(--accent-2);text-decoration:none;}
+footer a:hover{text-decoration:underline;}
 </style>
 </head>
 <body>
 <div class="app">
+<header>
+  <div class="top-row">
+    <h1>Yağmur Dictionary <span style="font-size:14px;opacity:.7">v1.3</span></h1>
+    <div class="controls">
+      <div class="search">
+        <input id="search" placeholder="Search the Yağmur dictionary">
+        <button class="clear-btn" onclick="clearSearch()">✖</button>
+      </div>
+      <select id="sort"><option value="az">A–Z</option><option value="new">Newest</option></select>
+    </div>
+  </div>
+  <div class="filters" id="filters"></div>
+</header>
 
-<!-- Start Screen -->
-<div class="start-card" id="start-screen">
-<h1>Yagmur Spelling Quiz</h1>
-<p>Test your knowledge of Yagmur's unique spellings!</p>
-<p>Guess the correct spelling from multiple options.</p>
-<h3>Instructions:</h3>
-<ul style="text-align:left;"> 
-<li>Choose a difficulty: Easy (30s per word), Medium (20s per word), Hard (10s per word).</li>
-<li>Each question has 4 options: 1 correct and 3 wrong variations.</li>
-<li>Progress is shown with a bar and question counter.</li>
-<li>You can pause the game, but the options will be hidden while paused.</li>
-<li>Your final score shows how well you know Yagmur's spellings!</li>
-</ul>
-<h3>Select Difficulty:</h3>
-<button onclick="startQuiz('easy')">Easy</button>
-<button onclick="startQuiz('medium')">Medium</button>
-<button onclick="startQuiz('hard')">Hard</button>
+<div class="word-of-day" id="word-of-day">Word of the Day: <strong>Boi</strong></div>
+
+<div class="word-count" id="word-count"></div>
+<div class="list" id="list"></div>
+
+<div class="footer-message" id="footer-message" style="display:none;">Hmm… looks like Yağmur hasn’t mispelled that one… yet 🥹</div>
+
+<div class="toast" id="toast">Copied! 🥹</div>
+
+<footer>
+© 2025 Yağmur Dictionary · Compiled by <strong>egsk.4</strong><br>
+<a href="https://www.instagram.com/yagmur.dictionary/" target="_blank">Official</a> ·
+<a href="https://www.instagram.com/yagmur.exe10/" target="_blank">Primary Source</a> ·
+<a href="https://www.instagram.com/egsk.4/" target="_blank">Editor</a><br>
+<span style="opacity:.6">v1.3 · Filters & archive prep</span>
+</footer>
 </div>
-
-<!-- Quiz Card -->
-<div class="quiz-card" id="quiz-card" style="display:none;">
-<div id="question-counter">1/1</div>
-<div id="timer">30s</div>
-<h2 id="current-word">Word</h2>
-<div id="options"></div>
-<div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
-<button id="pause-btn" onclick="togglePause()">Pause</button>
-<button id="reset-btn" onclick="resetQuiz()">Reset</button>
-<button id="main-menu-btn" onclick="goToStart()">Main Menu</button>
-</div>
-
-<!-- Pause Overlay -->
-<div id="pause-overlay"><h2>Paused</h2><button id="unpause-btn-overlay" class="option-btn" onclick="togglePause()">Resume</button></div>
-
-<!-- Result Card -->
-<div class="result-card" id="result-card" style="display:none;"><h1>Quiz Complete!</h1>
-<p id="score-text"></p>
-<button onclick="goToStart()">Main Menu</button>
-</div>
-
-<div id="toast">Copied! 🥹</div>
-<p style="text-align:center;margin-top:20px;opacity:.6;">Credits: egsk.4 · v1.0</p>
 
 <script>
+const activeCategories=new Set();
 const data=[
-{wrong:'Rasist',right:'Racist'},{wrong:'Sence',right:'Sense'},{wrong:'Congrajulashins',right:'Congrats'},{wrong:'Awsom',right:'Awesome'},{wrong:'Beget',right:'Baguette'},{wrong:'Salooshin',right:'Solution'},{wrong:'Deceshin',right:'Decision'},{wrong:'Masheeen',right:'Machine'},{wrong:'Problim',right:'Problem'},{wrong:'Exapshin',right:'Exception'},{wrong:'Conequit',right:'Connect'},{wrong:'Nolig',right:'Knowledge'},{wrong:'Jorgis',right:'Gorgeous'},{wrong:'Baisicaly',right:'Basically'},{wrong:'Sheeld at dawn',right:'Sheldon'},{wrong:'Sirios',right:'Serious'},{wrong:'Fought',right:'Thought'},{wrong:'Retardad',right:'Retarded'},{wrong:'Sipiration',right:'Separation'},{wrong:'Wiskir',right:'Whisker'},{wrong:'Mastash',right:'Moustache'},{wrong:'Minout',right:'Minute'},{wrong:'Burgeraly',right:'Burglary'},{wrong:'Dicshinary',right:'Dictionary'},{wrong:'Peaple',right:'People'},{wrong:'Oh em gee',right:'OMG'},{wrong:'Apiranitaly',right:'Apparently'},{wrong:'Properaly',right:'Properly'},{wrong:'Hibijibis',right:'Hijabis'},{wrong:'Perishian',right:'Persian'},{wrong:'Superfragalistixfradgilosas',right:'Supercalifragilisticexpialidocious'},{wrong:'Litirily',right:'Literally'},{wrong:'Kat',right:'Cat'},{wrong:'Prood',right:'Proud'},{wrong:'Tantroim',right:'Tantrum'},{wrong:'Boi',right:'Boy'},{wrong:'Isoki',right:"It's okay"}
+{wrong:'Rasist',right:'Racist',desc:'Someone who discriminates based on race.',example:'He was called a Rasist for his comments online.',category:'typo'},
+{wrong:'Sence',right:'Sense',desc:'Ability to perceive or understand.',example:'That did not make any Sence.',category:'typo'},
+{wrong:'Congrajulashins',right:'Congrats',desc:'Expression of praise.',example:'Congrajulashins on your exam!',category:'phonetic'},
+{wrong:'Awsom',right:'Awesome',desc:'Extremely good or impressive.',example:'That movie was Awsom.',category:'phonetic'},
+{wrong:'Beget',right:'Baguette',desc:'A type of bread.',example:'I bought a fresh Beget from the bakery.',category:'phonetic'},
+{wrong:'Salooshin',right:'Solution',desc:'An answer to a problem.',example:'We found a Salooshin to the problem.',category:'phonetic'},
+{wrong:'Deceshin',right:'Decision',desc:'A conclusion reached after consideration.',example:'It was a tough Deceshin.',category:'phonetic'},
+{wrong:'Masheeen',right:'Machine',desc:'A mechanical device.',example:'The Masheeen broke down.',category:'phonetic'},
+{wrong:'Problim',right:'Problem',desc:'A matter or situation regarded as unwelcome.',example:'I have a big Problim.',category:'phonetic'},
+{wrong:'Exapshin',right:'Exception',desc:'Something that does not follow a rule.',example:'This is an Exapshin to the rule.',category:'phonetic'},
+{wrong:'Conequit',right:'Connect',desc:'To link together.',example:'Can you Conequit the cables?',category:'typo'},
+{wrong:'Nolig',right:'Knowledge',desc:'Information, understanding, or skill.',example:'He has great Nolig.',category:'phonetic'},
+{wrong:'Jorgis',right:'Gorgeous',desc:'Beautiful; very attractive.',example:'She looked Jorgis.',category:'phonetic'},
+{wrong:'Baisicaly',right:'Basically',desc:'In a fundamental way.',example:'Baisicaly, it was fun.',category:'typo'},
+{wrong:'Sheeld at dawn',right:'Sheldon',desc:'A person’s name.',example:'Sheeld at dawn is my favorite character.',category:'humor'},
+{wrong:'Sirios',right:'Serious',desc:'Not joking or playful.',example:'He is Sirios about his work.',category:'phonetic'},
+{wrong:'Fought',right:'Thought',desc:'An idea or opinion produced by thinking.',example:'I never Fought about that.',category:'typo'},
+{wrong:'Retardad',right:'Retarded',desc:'Slowed or delayed.',example:'That idea was Retardad.',category:'typo'},
+{wrong:'Sipiration',right:'Separation',desc:'The action of moving apart.',example:'The Sipiration was hard.',category:'phonetic'},
+{wrong:'Wiskir',right:'Whisker',desc:"A long projecting hair on the face of an animal.",example:"The cat's Wiskir twitched.",category:'phonetic'},
+{wrong:'Mastash',right:'Moustache',desc:'Facial hair above the lip.',example:'He grew a Mastash.',category:'phonetic'},
+{wrong:'Minout',right:'Minute',desc:'A period of time equal to sixty seconds.',example:'I waited a Minout.',category:'phonetic'},
+{wrong:'Burgeraly',right:'Burglary',desc:'Illegal entry into a building.',example:'There was a Burgeraly in the neighborhood.',category:'phonetic'},
+{wrong:'Dicshinary',right:'Dictionary',desc:'A book that lists words and their meanings.',example:'This Dicshinary is helpful.',category:'typo'},
+{wrong:'Peaple',right:'People',desc:'Human beings in general.',example:'Many Peaple agree.',newWord:true,category:'typo'},
+{wrong:'Oh em gee',right:'OMG',desc:'Expression of surprise.',example:'Oh em gee that is wild.',newWord:true,category:'phrase'},
+{wrong:'Apiranitaly',right:'Apparently',desc:'As far as one knows.',example:'Apiranitaly it was canceled.',newWord:true,category:'phonetic'},
+{wrong:'Properaly',right:'Properly',desc:'Done correctly.',example:'Do it Properaly.',newWord:true,category:'typo'},
+{wrong:'Hibijibis',right:'Hijabis',desc:'Women who wear the hijab.',example:'The Hibijibis attended the event.',newWord:true,category:'phonetic'},
+{wrong:'Perishian',right:'Persian',desc:'Relating to Persia/Iran.',example:'She speaks Perishian.',newWord:true,category:'phonetic'},
+{wrong:'Superfragalistixfradgilosas',right:'Supercalifragilisticexpialidocious',desc:'A nonsense word meaning fantastic.',example:'That trick was Superfragalistixfradgilosas.',newWord:true,category:'humor'},
+{wrong:'Litirily',right:'Literally',desc:'In an exact sense.',example:'I was Litirily shocked.',newWord:true,category:'phonetic'},
+{wrong:'Kat',right:'Cat',desc:'A small domesticated animal.',example:'The Kat slept on the couch.',newWord:true,category:'phonetic'},
+{wrong:'Prood',right:'Proud',desc:'Feeling pride.',example:'I am very Prood of you.',newWord:true,category:'phonetic'},
+{wrong:'Tantroim',right:'Tantrum',desc:'A sudden outburst of anger.',example:'He threw a Tantroim.',newWord:true,category:'typo'},
+{wrong:'Boi',right:'Boy',desc:'A young male.',example:'I saw a Boi in the park.',newWord:true,category:'phrase'},
+{wrong:'Isoki',right:"It's okay",desc:'Used to indicate comfort or reassurance.',example:"He said Isoki.",newWord:true,category:'phrase'}
 ];
 
-let currentIndex=0;
-let score=0;
-let timerInterval;
-let timeLeft=30;
-let difficulty='easy';
-let paused=false;
+const list=document.getElementById('list');
+const search=document.getElementById('search');
+const wordCount=document.getElementById('word-count');
+const filters=document.getElementById('filters');
+const wordOfDayEl=document.getElementById('word-of-day');
+const toast=document.getElementById('toast');
+const footerMessage=document.getElementById('footer-message');
 
-function startQuiz(level){
-  difficulty=level;
-  document.getElementById('start-screen').style.display='none';
-  document.getElementById('quiz-card').style.display='block';
-  currentIndex=0;
-  score=0;
-  timeLeft=difficulty==='easy'?30:difficulty==='medium'?20:10;
-  renderQuestion();
-  startTimer();
+const categories=[...new Set(data.map(d=>d.category))];
+filters.innerHTML=`<span class="filter active" data-cat="all">All</span>`+
+categories.map(c=>`<span class="filter" data-cat="${c}">${c}</span>`).join('');
+
+filters.onclick=e=>{
+  if(!e.target.dataset.cat)return;
+  const c=e.target.dataset.cat;
+  if(c==='all'){activeCategories.clear();[...filters.children].forEach(f=>f.classList.remove('active'));e.target.classList.add('active')}
+  else{filters.querySelector('[data-cat="all"]').classList.remove('active');e.target.classList.toggle('active');activeCategories.has(c)?activeCategories.delete(c):activeCategories.add(c)}
+  render();
+};
+
+function copyEntry(i){
+  navigator.clipboard.writeText(`❌ ${i.right}\n✅ ${i.wrong}\nExample: ${i.example}`);
+  toast.style.opacity='1';
+  setTimeout(()=>{toast.style.opacity='0'},1500);
 }
 
-function renderQuestion(){
-  const q=data[currentIndex];
-  document.getElementById('current-word').textContent=q.right;
-  const optionsEl=document.getElementById('options');
-  optionsEl.innerHTML='';
-  let options=[q.wrong,q.right];
-  while(options.length<4){
-    let rand=q.right.split('').sort(()=>Math.random()-0.5).join('');
-    if(!options.includes(rand)) options.push(rand);
-  }
-  options=options.sort(()=>Math.random()-0.5);
-  options.forEach(o=>{
-    let btn=document.createElement('button');
-    btn.textContent=o;
-    btn.className='option-btn';
-    btn.onclick=()=>answer(o,q.right);
-    optionsEl.appendChild(btn);
+function clearSearch(){search.value='';render();}
+
+function render(){
+  list.innerHTML='';let count=0;
+  let items=[...data];
+  if(sort.value==='az')items.sort((a,b)=>a.wrong.localeCompare(b.wrong));
+  else items.sort((a,b)=>(b.newWord===true)-(a.newWord===true));
+  
+  if(search.value.trim()!=='')wordOfDayEl.style.display='none';
+  else wordOfDayEl.style.display='block';
+
+  items.forEach((i,idx)=>{
+    if(activeCategories.size&&!activeCategories.has(i.category))return;
+    if(!i.wrong.toLowerCase().includes(search.value.toLowerCase())&&!i.right.toLowerCase().includes(search.value.toLowerCase()))return;
+    count++;
+    list.innerHTML+=`
+    <div class="card">
+      <button class="copy-btn" onclick="copyEntry(data[${idx}])">📋</button>
+      ${i.newWord?'<span class="badge-new"> New!</span>':''}
+      <span class="tag">${i.category}</span>
+      <div class="right">❌ ${i.right}</div>
+      <div class="wrong">✅ ${i.wrong}</div>
+      <div class="desc"><strong>Definition:</strong> ${i.desc}</div>
+      <div class="desc"><strong>Example:</strong> ${i.example}</div>
+    </div>`;
   });
-  document.getElementById('question-counter').textContent=`${currentIndex+1}/${data.length}`;
-  document.getElementById('progress-fill').style.width=`${((currentIndex)/data.length)*100}%`;
-  timeLeft=difficulty==='easy'?30:difficulty==='medium'?20:10;
-  document.getElementById('timer').textContent=`${timeLeft}s`;
-  document.getElementById('reset-btn').classList.remove('active');
-}
 
-function answer(selected, correct){
-  if(selected===correct) score++;
-  currentIndex++;
-  timeLeft=difficulty==='easy'?30:difficulty==='medium'?20:10;
-  if(currentIndex>=data.length){
-    endQuiz();
-  } else {
-    renderQuestion();
+  if(count===0){
+    footerMessage.style.display='block';
+  }else{
+    footerMessage.style.display='none';
   }
+
+  wordCount.textContent=`Total words: ${count}`;
 }
 
-function endQuiz(){
-  clearInterval(timerInterval);
-  document.getElementById('quiz-card').style.display='none';
-  document.getElementById('result-card').style.display='block';
-  const percent=Math.round((score/data.length)*100);
-  let msg=percent<40?"YDK Yagmur that well 😅":"They know her 😎";
-  document.getElementById('score-text').textContent=`Score: ${score}/${data.length} (${percent}%) - ${msg}`;
-}
-
-function startTimer(){
-  clearInterval(timerInterval);
-  timerInterval=setInterval(()=>{
-    if(!paused){
-      timeLeft--;
-      document.getElementById('timer').textContent=`${timeLeft}s`;
-      if(timeLeft<=0){
-        currentIndex++;
-        if(currentIndex>=data.length){
-          endQuiz();
-        } else renderQuestion();
-      }
-    }
-  },1000);
-}
-
-function togglePause(){
-  paused=!paused;
-  const overlay=document.getElementById('pause-overlay');
-  overlay.style.display=paused?'flex':'none';
-}
-
-function resetQuiz(){
-  paused=true;
-  const overlay=document.createElement('div');
-  overlay.id='reset-overlay';
-  overlay.style.position='absolute';
-  overlay.style.top='0';
-  overlay.style.left='0';
-  overlay.style.width='100%';
-  overlay.style.height='100%';
-  overlay.style.background='#000';
-  overlay.style.display='flex';
-  overlay.style.flexDirection='column';
-  overlay.style.alignItems='center';
-  overlay.style.justifyContent='center';
-  overlay.style.borderRadius='20px';
-  overlay.style.zIndex='20';
-  overlay.innerHTML=`<h2 style="color:#fff;margin-bottom:20px;text-align:center;">Restart this level?</h2><div style="display:flex;gap:10px;"><button id='restart-yes' class='option-btn'>Yes</button><button id='restart-no' class='option-btn'>No</button><button id='restart-menu' class='option-btn'>Main Menu</button></div>`;
-  document.querySelector('.app').appendChild(overlay);
-  const resetBtn=document.getElementById('reset-btn');
-  resetBtn.classList.add('active');
-  document.getElementById('restart-yes').onclick=()=>{
-    document.querySelector('.app').removeChild(overlay);
-    paused=false;
-    renderQuestion();
-    startTimer();
-    resetBtn.classList.remove('active');
-  };
-  document.getElementById('restart-no').onclick=()=>{
-    document.querySelector('.app').removeChild(overlay);
-    paused=false;
-    resetBtn.classList.remove('active');
-  };
-  document.getElementById('restart-menu').onclick=()=>{
-    document.querySelector('.app').removeChild(overlay);
-    goToStart();
-  };
-}
-
-function goToStart(){
-  document.getElementById('result-card').style.display='none';
-  document.getElementById('quiz-card').style.display='none';
-  document.getElementById('start-screen').style.display='block';
-  clearInterval(timerInterval);
-}
+search.oninput=render;
+sort.onchange=render;
+render();
 </script>
 </body>
 </html>
