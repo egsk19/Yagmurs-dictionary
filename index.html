@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Yağmur Dictionary</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
 <style>
 :root{
   --bg:#050415;
@@ -21,67 +22,65 @@ body{margin:0;font-family:Inter,sans-serif;background:var(--bg);color:var(--text
 header{display:flex;flex-direction:column;gap:12px;}
 .top-row{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;}
 h1{margin:0;font-size:28px;}
-.controls{display:flex;gap:10px;flex-wrap:wrap;position:relative;}
+.controls{display:flex;gap:10px;flex-wrap:wrap;}
 .search{position:relative;}
 .search input{
   background:var(--card);color:var(--text);border:none;border-radius:12px;
-  padding:12px 50px 12px 16px;
-  width:360px;
+  padding:12px 50px 12px 16px;width:360px;
   box-shadow:inset 0 0 0 1px #1f2937;
 }
 .search .clear-btn{
-  position:absolute;
-  right:10px;
-  top:50%;
+  position:absolute;right:10px;top:50%;
   transform:translateY(-50%);
-  background:none;
-  border:none;
-  color:#aaa;
-  font-size:16px;
+  background:none;border:none;color:#aaa;
   cursor:pointer;
-  opacity:.7;
 }
-.search .clear-btn:hover{opacity:1;}
 .search::after{content:"🔍";position:absolute;right:36px;top:50%;transform:translateY(-50%);opacity:.6;}
 select{
-  background:var(--card);color:var(--text);border:none;padding:10px;font-size:12px;box-shadow:inset 0 0 0 1px #1f2937;border-radius:12px;
+  background:var(--card);color:var(--text);border:none;
+  padding:10px;font-size:12px;
+  box-shadow:inset 0 0 0 1px #1f2937;border-radius:12px;
 }
 .filters{display:flex;gap:6px;flex-wrap:wrap;}
 .filter{
-  font-size:10px;padding:4px 10px;border-radius:999px;background:#020617;box-shadow:inset 0 0 0 1px #1f2937;color:var(--muted);cursor:pointer;
+  font-size:10px;padding:4px 10px;border-radius:999px;
+  background:#020617;box-shadow:inset 0 0 0 1px #1f2937;
+  color:var(--muted);cursor:pointer;
 }
 .filter.active{background:#1e293b;color:#fff;box-shadow:inset 0 0 0 1px #3b82f6;}
 .word-count{text-align:center;font-size:12px;color:var(--muted);margin-bottom:16px;}
 .list{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;}
 .card{
   background:var(--card);border-radius:16px;padding:18px;
-  box-shadow:inset 0 0 0 1px #1f2937;text-align:center;transition:transform .2s ease, box-shadow .2s ease;
+  box-shadow:inset 0 0 0 1px #1f2937;text-align:center;
 }
-.card:hover{transform:translateY(-3px);box-shadow:0 12px 28px rgba(0,0,0,.35);}
 .badge-new{border-radius:999px;background:#f59e0b;padding:2px 8px;font-size:10px;color:#fff;}
 .tag{font-size:9px;padding:2px 6px;border-radius:6px;background:#1e293b;color:var(--muted);margin-left:4px;}
-.right, .wrong{font-size:16px;font-weight:700;text-align:center;margin:6px 0;}
-.right{color:var(--danger);}
-.wrong{color:var(--accent-2);}
-.desc{font-size:13px;color:var(--muted);margin-top:8px;text-align:center;}
-.copy-btn{background:none;border:none;color:#aaa;cursor:pointer;float:right;font-size:14px;opacity:.6;}
-.copy-btn:hover{opacity:1;}
+.right{color:var(--danger);font-size:16px;font-weight:700;}
+.wrong{color:var(--accent-2);font-size:16px;font-weight:700;}
+.desc{font-size:13px;color:var(--muted);margin-top:8px;}
+.copy-btn{background:none;border:none;color:#aaa;cursor:pointer;float:right;}
 .toast{
-  position:fixed;bottom:20px;right:20px;background:#222;padding:12px 20px;border-radius:12px;color:#fff;opacity:0;pointer-events:none;transition:opacity .3s;text-align:center;
+  position:fixed;bottom:20px;right:20px;
+  background:#222;padding:12px 20px;border-radius:12px;
+  color:#fff;opacity:0;transition:.3s;
 }
 .word-of-day{
-  background:var(--card);padding:12px 16px;border-radius:16px;margin-bottom:16px;text-align:center;font-weight:600;box-shadow:inset 0 0 0 1px #1f2937;
+  background:var(--card);padding:12px 16px;border-radius:16px;
+  margin-bottom:16px;text-align:center;font-weight:600;
 }
 .footer-message{
-  background:var(--card);padding:18px 16px;border-radius:16px;margin-top:16px;text-align:center;box-shadow:inset 0 0 0 1px #1f2937;
+  background:var(--card);padding:18px 16px;border-radius:16px;
+  margin-top:16px;text-align:center;display:none;
 }
 footer{text-align:center;font-size:9px;color:var(--muted);margin-top:22px;}
 footer a{color:var(--accent-2);text-decoration:none;}
-footer a:hover{text-decoration:underline;}
 </style>
 </head>
+
 <body>
 <div class="app">
+
 <header>
   <div class="top-row">
     <h1>Yağmur Dictionary <span style="font-size:14px;opacity:.7">v1.3</span></h1>
@@ -90,18 +89,22 @@ footer a:hover{text-decoration:underline;}
         <input id="search" placeholder="Search the Yağmur dictionary">
         <button class="clear-btn" onclick="clearSearch()">✖</button>
       </div>
-      <select id="sort"><option value="az">A–Z</option><option value="new">Newest</option></select>
+      <select id="sort">
+        <option value="az">A–Z</option>
+        <option value="new">Newest</option>
+      </select>
     </div>
   </div>
   <div class="filters" id="filters"></div>
 </header>
 
-<div class="word-of-day" id="word-of-day">Word of the Day: <strong>Boi</strong></div>
-
+<div class="word-of-day" id="word-of-day">Word of the Day: <strong>sqweer</strong></div>
 <div class="word-count" id="word-count"></div>
 <div class="list" id="list"></div>
 
-<div class="footer-message" id="footer-message" style="display:none;">Hmm… looks like Yağmur hasn’t mispelled that one… yet 🥹</div>
+<div class="footer-message" id="footer-message">
+  Hmm… looks like Yağmur hasn’t mispelled that one… yet 🥹
+</div>
 
 <div class="toast" id="toast">Copied! 🥹</div>
 
@@ -109,13 +112,26 @@ footer a:hover{text-decoration:underline;}
 © 2025 Yağmur Dictionary · Compiled by <strong>egsk.4</strong><br>
 <a href="https://www.instagram.com/yagmur.dictionary/" target="_blank">Official</a> ·
 <a href="https://www.instagram.com/yagmur.exe10/" target="_blank">Primary Source</a> ·
-<a href="https://www.instagram.com/egsk.4/" target="_blank">Editor</a><br>
-<span style="opacity:.6">v1.3 · Filters & archive prep</span>
+<a href="https://www.instagram.com/egsk.4/" target="_blank">Editor</a>
 </footer>
+
 </div>
 
 <script>
+/*
+========================================
+HOW TO ADD WORDS
+----------------------------------------
+1. Scroll to the BOTTOM of `data`
+2. Copy an object
+3. Paste it below
+4. Edit fields
+5. Keep the comma!
+========================================
+*/
+
 const activeCategories=new Set();
+
 const data=[
 {wrong:'Rasist',right:'Racist',desc:'Someone who discriminates based on race.',example:'He was called a Rasist for his comments online.',category:'typo'},
 {wrong:'Sence',right:'Sense',desc:'Ability to perceive or understand.',example:'That did not make any Sence.',category:'typo'},
@@ -125,35 +141,42 @@ const data=[
 {wrong:'Salooshin',right:'Solution',desc:'An answer to a problem.',example:'We found a Salooshin to the problem.',category:'phonetic'},
 {wrong:'Deceshin',right:'Decision',desc:'A conclusion reached after consideration.',example:'It was a tough Deceshin.',category:'phonetic'},
 {wrong:'Masheeen',right:'Machine',desc:'A mechanical device.',example:'The Masheeen broke down.',category:'phonetic'},
-{wrong:'Problim',right:'Problem',desc:'A matter or situation regarded as unwelcome.',example:'I have a big Problim.',category:'phonetic'},
+{wrong:'Problim',right:'Problem',desc:'A matter regarded as unwelcome.',example:'I have a big Problim.',category:'phonetic'},
 {wrong:'Exapshin',right:'Exception',desc:'Something that does not follow a rule.',example:'This is an Exapshin to the rule.',category:'phonetic'},
 {wrong:'Conequit',right:'Connect',desc:'To link together.',example:'Can you Conequit the cables?',category:'typo'},
-{wrong:'Nolig',right:'Knowledge',desc:'Information, understanding, or skill.',example:'He has great Nolig.',category:'phonetic'},
-{wrong:'Jorgis',right:'Gorgeous',desc:'Beautiful; very attractive.',example:'She looked Jorgis.',category:'phonetic'},
+{wrong:'Nolig',right:'Knowledge',desc:'Information or skill.',example:'He has great Nolig.',category:'phonetic'},
+{wrong:'Jorgis',right:'Gorgeous',desc:'Very attractive.',example:'She looked Jorgis.',category:'phonetic'},
 {wrong:'Baisicaly',right:'Basically',desc:'In a fundamental way.',example:'Baisicaly, it was fun.',category:'typo'},
 {wrong:'Sheeld at dawn',right:'Sheldon',desc:'A person’s name.',example:'Sheeld at dawn is my favorite character.',category:'humor'},
-{wrong:'Sirios',right:'Serious',desc:'Not joking or playful.',example:'He is Sirios about his work.',category:'phonetic'},
-{wrong:'Fought',right:'Thought',desc:'An idea or opinion produced by thinking.',example:'I never Fought about that.',category:'typo'},
+{wrong:'Sirios',right:'Serious',desc:'Not joking.',example:'He is Sirios about his work.',category:'phonetic'},
+{wrong:'Fought',right:'Thought',desc:'An idea produced by thinking.',example:'I never Fought about that.',category:'typo'},
 {wrong:'Retardad',right:'Retarded',desc:'Slowed or delayed.',example:'That idea was Retardad.',category:'typo'},
 {wrong:'Sipiration',right:'Separation',desc:'The action of moving apart.',example:'The Sipiration was hard.',category:'phonetic'},
-{wrong:'Wiskir',right:'Whisker',desc:"A long projecting hair on the face of an animal.",example:"The cat's Wiskir twitched.",category:'phonetic'},
-{wrong:'Mastash',right:'Moustache',desc:'Facial hair above the lip.',example:'He grew a Mastash.',category:'phonetic'},
-{wrong:'Minout',right:'Minute',desc:'A period of time equal to sixty seconds.',example:'I waited a Minout.',category:'phonetic'},
-{wrong:'Burgeraly',right:'Burglary',desc:'Illegal entry into a building.',example:'There was a Burgeraly in the neighborhood.',category:'phonetic'},
-{wrong:'Dicshinary',right:'Dictionary',desc:'A book that lists words and their meanings.',example:'This Dicshinary is helpful.',category:'typo'},
-{wrong:'Peaple',right:'People',desc:'Human beings in general.',example:'Many Peaple agree.',newWord:true,category:'typo'},
-{wrong:'Oh em gee',right:'OMG',desc:'Expression of surprise.',example:'Oh em gee that is wild.',newWord:true,category:'phrase'},
-{wrong:'Apiranitaly',right:'Apparently',desc:'As far as one knows.',example:'Apiranitaly it was canceled.',newWord:true,category:'phonetic'},
-{wrong:'Properaly',right:'Properly',desc:'Done correctly.',example:'Do it Properaly.',newWord:true,category:'typo'},
-{wrong:'Hibijibis',right:'Hijabis',desc:'Women who wear the hijab.',example:'The Hibijibis attended the event.',newWord:true,category:'phonetic'},
-{wrong:'Perishian',right:'Persian',desc:'Relating to Persia/Iran.',example:'She speaks Perishian.',newWord:true,category:'phonetic'},
-{wrong:'Superfragalistixfradgilosas',right:'Supercalifragilisticexpialidocious',desc:'A nonsense word meaning fantastic.',example:'That trick was Superfragalistixfradgilosas.',newWord:true,category:'humor'},
-{wrong:'Litirily',right:'Literally',desc:'In an exact sense.',example:'I was Litirily shocked.',newWord:true,category:'phonetic'},
-{wrong:'Kat',right:'Cat',desc:'A small domesticated animal.',example:'The Kat slept on the couch.',newWord:true,category:'phonetic'},
-{wrong:'Prood',right:'Proud',desc:'Feeling pride.',example:'I am very Prood of you.',newWord:true,category:'phonetic'},
-{wrong:'Tantroim',right:'Tantrum',desc:'A sudden outburst of anger.',example:'He threw a Tantroim.',newWord:true,category:'typo'},
-{wrong:'Boi',right:'Boy',desc:'A young male.',example:'I saw a Boi in the park.',newWord:true,category:'phrase'},
-{wrong:'Isoki',right:"It's okay",desc:'Used to indicate comfort or reassurance.',example:"He said Isoki.",newWord:true,category:'phrase'}
+{wrong:'Wiskir',right:'Whisker',desc:'A long projecting hair.',example:"The cat's Wiskir twitched.",category:'phonetic'},
+{wrong:'Mastash',right:'Moustache',desc:'Facial hair.',example:'He grew a Mastash.',category:'phonetic'},
+{wrong:'Minout',right:'Minute',desc:'Sixty seconds.',example:'I waited a Minout.',category:'phonetic'},
+{wrong:'Burgeraly',right:'Burglary',desc:'Illegal entry.',example:'There was a Burgeraly.',category:'phonetic'},
+{wrong:'Dicshinary',right:'Dictionary',desc:'A word reference book.',example:'This Dicshinary is helpful.',category:'typo'},
+{wrong:'Peaple',right:'People',desc:'Human beings.',example:'Many Peaple agree.',newWord:false,category:'typo'},
+{wrong:'Oh em gee',right:'OMG',desc:'Expression of surprise.',example:'Oh em gee that is wild.',newWord:false,category:'phrase'},
+{wrong:'Apiranitaly',right:'Apparently',desc:'As far as one knows.',example:'Apiranitaly it was canceled.',newWord:false,category:'phonetic'},
+{wrong:'Properaly',right:'Properly',desc:'Done correctly.',example:'Do it Properaly.',newWord:false,category:'typo'},
+{wrong:'Hibijibis',right:'Hijabis',desc:'Women who wear hijab.',example:'The Hibijibis attended.',newWord:false,category:'phonetic'},
+{wrong:'Perishian',right:'Persian',desc:'Relating to Persia.',example:'She speaks Perishian.',newWord:false,category:'phonetic'},
+{wrong:'Superfragalistixfradgilosas',right:'Supercalifragilisticexpialidocious',desc:'A nonsense word.',example:'That trick was Superfragalistixfradgilosas.',newWord:false,category:'humor'},
+{wrong:'Litirily',right:'Literally',desc:'In an exact sense.',example:'I was Litirily shocked.',newWord:false,category:'phonetic'},
+{wrong:'Kat',right:'Cat',desc:'A small animal.',example:'The Kat slept.',newWord:false,category:'phonetic'},
+{wrong:'Prood',right:'Proud',desc:'Feeling pride.',example:'I am very Prood.',newWord:false,category:'phonetic'},
+{wrong:'Tantroim',right:'Tantrum',desc:'An angry outburst.',example:'He threw a Tantroim.',newWord:false,category:'typo'},
+{wrong:'Boi',right:'Boy',desc:'A young male.',example:'I saw a Boi.',newWord:false,category:'phrase'},
+{wrong:'Isoki',right:"It's okay",desc:'Reassurance.',example:'He said Isoki.',newWord:false,category:'phrase'},
+
+/* 🆕 YOUR NEW WORDS — ADDED ONLY */
+{wrong:'rehistorical',right:'rhetorical',desc:'Relating to persuasion or speech.',example:'That question was rehistorical.',newWord:true,category:'typo'},
+{wrong:'Ebo Is cool',right:'Yag Is cool',desc:'No explanation needed.',example:'Ebo Is so cool.',newWord:true,category:'phonetic'},
+{wrong:'sqweer',right:'square',desc:'A shape with four equal sides.',example:'Draw a sqweer.',newWord:true,category:'phonetic'},
+{wrong:'tryangel',right:'triangle',desc:'A shape with three sides.',example:'The sign was a tryangel.',newWord:true,category:'phonetic'},
+{wrong:'Peice',right:'Piece',desc:'A portion of something.',example:'Give me a Peice of cake.',newWord:true,category:'typo'}
 ];
 
 const list=document.getElementById('list');
@@ -179,9 +202,8 @@ filters.onclick=e=>{
 function copyEntry(i){
   navigator.clipboard.writeText(`❌ ${i.right}\n✅ ${i.wrong}\nExample: ${i.example}`);
   toast.style.opacity='1';
-  setTimeout(()=>{toast.style.opacity='0'},1500);
+  setTimeout(()=>toast.style.opacity='0',1500);
 }
-
 function clearSearch(){search.value='';render();}
 
 function render(){
@@ -189,9 +211,8 @@ function render(){
   let items=[...data];
   if(sort.value==='az')items.sort((a,b)=>a.wrong.localeCompare(b.wrong));
   else items.sort((a,b)=>(b.newWord===true)-(a.newWord===true));
-  
-  if(search.value.trim()!=='')wordOfDayEl.style.display='none';
-  else wordOfDayEl.style.display='block';
+
+  search.value.trim()?wordOfDayEl.style.display='none':wordOfDayEl.style.display='block';
 
   items.forEach((i,idx)=>{
     if(activeCategories.size&&!activeCategories.has(i.category))return;
@@ -209,12 +230,7 @@ function render(){
     </div>`;
   });
 
-  if(count===0){
-    footerMessage.style.display='block';
-  }else{
-    footerMessage.style.display='none';
-  }
-
+  footerMessage.style.display=count===0?'block':'none';
   wordCount.textContent=`Total words: ${count}`;
 }
 
@@ -222,5 +238,6 @@ search.oninput=render;
 sort.onchange=render;
 render();
 </script>
+
 </body>
 </html>
